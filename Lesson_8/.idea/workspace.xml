@@ -2,7 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="2148f9c8-c063-419f-98aa-d45fa5c04175" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/runner.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/instagram/pipelines.py" beforeDir="false" afterPath="$PROJECT_DIR$/instagram/pipelines.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/instagram/spiders/insta.py" beforeDir="false" afterPath="$PROJECT_DIR$/instagram/spiders/insta.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/runner.py" beforeDir="false" afterPath="$PROJECT_DIR$/runner.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

@@ -16,11 +16,14 @@ class InstaSpider(scrapy.Spider):
     login_url = "https://www.instagram.com/accounts/login/ajax/"
     friendships_url = "https://i.instagram.com/api/v1/friendships/"
 
-    username = 'Onliskill_udm'  # Qw123456789
-    enc_password = '#PWD_INSTAGRAM_BROWSER:9:1636996814:AVdQACJHOSulAXqCaWuUYdoaEKze3NmgDMk5sdAz1m6hPyEfuHOqzOw2JPBiG7PZJbStYLEhxlrivC4HFC14TxgVEz8VGIyhwA1Ba3LgZ16sZVWM3LJ6huefN4DvYgnu3W3fsQDN1lGDGp4SyiYN'
-    # username = "dimagilev91"
-    # enc_password = "#PWD_INSTAGRAM_BROWSER:10:1637092063:Ab1QAMMtttD/DiGMQoe7evZC+0A2pj7Z5RwXr50ZsaXt9JkQWzeNrqsjSh2ENJVzKB2TuO3DwgiczXcnLPMDqtEeSRJn8YNpaK0IIpc3hBvhAJyoHk8nlei1dtFuRDbSP6WwoqJiax7DuDZUCIqz"
-    users_for_parse = ["_uvarov_vlad_"]
+    #username = 'Onliskill_udm'  # Qw123456789
+    #enc_password = '#PWD_INSTAGRAM_BROWSER:9:1636996814:AVdQACJHOSulAXqCaWuUYdoaEKze3NmgDMk5sdAz1m6hPyEfuHOqzOw2JPBiG7PZJbStYLEhxlrivC4HFC14TxgVEz8VGIyhwA1Ba3LgZ16sZVWM3LJ6huefN4DvYgnu3W3fsQDN1lGDGp4SyiYN'
+    username = "dimagilev91"
+    enc_password = "#PWD_INSTAGRAM_BROWSER:10:1637092063:Ab1QAMMtttD/DiGMQoe7evZC+0A2pj7Z5RwXr50ZsaXt9JkQWzeNrqsjSh2ENJVzKB2TuO3DwgiczXcnLPMDqtEeSRJn8YNpaK0IIpc3hBvhAJyoHk8nlei1dtFuRDbSP6WwoqJiax7DuDZUCIqz"
+    #users_for_parse = ["lizka_barbarissska", "rashinatina"]
+    users_for_parse = ["lizka_barbarissska"]
+    #users_for_parse = ["rashinatina"]
+    #users_for_parse = ["onliskill_udm"]
 
     def parse(self, response: HtmlResponse):
         csrf_token = self.get_csrf_token(response.text)
@@ -62,6 +65,8 @@ class InstaSpider(scrapy.Spider):
                                              "subscription_description": subscription_description})
 
         users = response.json().get("users")
+        print(subscription_description, "users", users, "next_max_id", next_max_id)
+
         new_users = list()
         for user in users:
             new_users.append(
@@ -75,6 +80,8 @@ class InstaSpider(scrapy.Spider):
 
     def generate_followers_url(self, userid, count, max_id):
         variables = {"count": count, "max_id": max_id}
+        if max_id == 0:
+            variables.pop("max_id")
         return f"{self.friendships_url}{userid}/followers/?{urlencode(variables)}&search_surface=follow_list_page"
 
     def generate_following_url(self, userid, count, max_id):

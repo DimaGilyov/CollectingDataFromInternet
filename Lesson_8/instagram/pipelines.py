@@ -12,15 +12,23 @@ class InstagramPipeline:
         new_item.pop("collection_name")
         new_item[item["collection_name"]] = new_item.pop("users")
 
-        users = new_item[item["collection_name"]]
         try:
             user = list(collection.find({"_id": new_item["_id"]}))[0]
-            user[item["collection_name"]] += users
-            user[item["collection_name"]] = [dict(t) for t in
-                                             set([tuple(d.items()) for d in user[item["collection_name"]]])]
-            new_item = user
-        except:
-            print("NEW_USER")
+            user[item["collection_name"]] += new_item[item["collection_name"]]
+
+            ids = set()
+            users_without_duplicate = []
+            for el in user[item["collection_name"]]:
+                if el["_id"] not in ids:
+                    print("ADD", el)
+                    ids.add(el["_id"])
+                    users_without_duplicate.append(el)
+                else:
+                    print("DIPLICATE", el)
+
+            new_item[item["collection_name"]] = users_without_duplicate
+        except Exception as ex:
+            print(ex)
         finally:
             collection.update_one({'_id': f'{new_item["_id"]}'}, {'$set': new_item}, upsert=True)
         return item
