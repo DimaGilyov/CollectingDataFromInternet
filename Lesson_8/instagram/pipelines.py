@@ -16,6 +16,8 @@ class InstagramPipeline:
             user = list(collection.find({"_id": new_item["_id"]}))[0]
             user[item["collection_name"]] += new_item[item["collection_name"]]
 
+            # Из за того что url фотографии меняется (прогруженное фото и не прогруженное), не получается правильно отсечь дубликаты
+            # Воспользуемся топорным способом
             ids = set()
             users_without_duplicate = []
             for el in user[item["collection_name"]]:

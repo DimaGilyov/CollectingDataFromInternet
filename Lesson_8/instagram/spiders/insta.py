@@ -44,13 +44,13 @@ class InstaSpider(scrapy.Spider):
 
     def parse_user(self, response: HtmlResponse, username):
         userid = self.get_userid(response.text, username)
-        followers_url = self.generate_followers_url(userid, 12, 0)
+        followers_url = self.generate_followers_url(userid, 12)
         yield response.follow(followers_url, callback=self.parse_subscriptions,
                               cb_kwargs={"userid": userid, "username": username,
                                          "url_generator": self.generate_followers_url,
                                          "subscription_description": "followers"})
 
-        following_url = self.generate_following_url(userid, 12, 0)
+        following_url = self.generate_following_url(userid, 12)
         yield response.follow(following_url, callback=self.parse_subscriptions,
                               cb_kwargs={"userid": userid, "username": username,
                                          "url_generator": self.generate_following_url,
@@ -78,15 +78,15 @@ class InstaSpider(scrapy.Spider):
         yield UserItem(_id=userid, username=username, users=new_users,
                        collection_name=subscription_description)
 
-    def generate_followers_url(self, userid, count, max_id):
+    def generate_followers_url(self, userid, count, max_id=None):
         variables = {"count": count, "max_id": max_id}
-        if max_id == 0:
+        if not max_id:
             variables.pop("max_id")
         return f"{self.friendships_url}{userid}/followers/?{urlencode(variables)}&search_surface=follow_list_page"
 
-    def generate_following_url(self, userid, count, max_id):
+    def generate_following_url(self, userid, count, max_id=None):
         variables = {"count": count, "max_id": max_id}
-        if max_id == 0:
+        if not max_id:
             variables.pop("max_id")
         return f"{self.friendships_url}{userid}/following/?{urlencode(variables)}"
 
