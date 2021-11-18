@@ -26,7 +26,7 @@ class InstagramPipeline:
                     ids.add(el["_id"])
                     users_without_duplicate.append(el)
                 else:
-                    print("DIPLICATE", el)
+                    print("DUPLICATE", el)
 
             new_item[item["collection_name"]] = users_without_duplicate
         except Exception as ex:

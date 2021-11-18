@@ -1,10 +1,8 @@
-import json
 import re
 from urllib.parse import urlencode
 
 import scrapy
 from scrapy.http import HtmlResponse
-from copy import deepcopy
 
 from instagram.items import UserItem
 
@@ -16,15 +14,9 @@ class InstaSpider(scrapy.Spider):
     login_url = "https://www.instagram.com/accounts/login/ajax/"
     friendships_url = "https://i.instagram.com/api/v1/friendships/"
 
-    #username = 'Onliskill_udm'  # Qw123456789
-    #enc_password = '#PWD_INSTAGRAM_BROWSER:9:1636996814:AVdQACJHOSulAXqCaWuUYdoaEKze3NmgDMk5sdAz1m6hPyEfuHOqzOw2JPBiG7PZJbStYLEhxlrivC4HFC14TxgVEz8VGIyhwA1Ba3LgZ16sZVWM3LJ6huefN4DvYgnu3W3fsQDN1lGDGp4SyiYN'
-    username = "dimagilev91"
-    enc_password = "#PWD_INSTAGRAM_BROWSER:10:1637092063:Ab1QAMMtttD/DiGMQoe7evZC+0A2pj7Z5RwXr50ZsaXt9JkQWzeNrqsjSh2ENJVzKB2TuO3DwgiczXcnLPMDqtEeSRJn8YNpaK0IIpc3hBvhAJyoHk8nlei1dtFuRDbSP6WwoqJiax7DuDZUCIqz"
-    #users_for_parse = ["lizka_barbarissska", "rashinatina"]
-    users_for_parse = ["lizka_barbarissska"]
-    #users_for_parse = ["rashinatina"]
-    #users_for_parse = ["onliskill_udm"]
-
+    username = ''
+    enc_password = ''
+    users_for_parse = ["tapaevadaniya", "onliskill_udm"]
     def parse(self, response: HtmlResponse):
         csrf_token = self.get_csrf_token(response.text)
         yield scrapy.FormRequest(
@@ -65,7 +57,8 @@ class InstaSpider(scrapy.Spider):
                                              "subscription_description": subscription_description})
 
         users = response.json().get("users")
-        print(subscription_description, "users", users, "next_max_id", next_max_id)
+        print(subscription_description, ", users_count: ", len(users), ", url: ", response.url)
+        print("users: ", users)
 
         new_users = list()
         for user in users:
